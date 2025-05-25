@@ -37,10 +37,22 @@ sbt compile
 sbt package
 ```
 
-4. Run the application:
-```bash
-./run.sh
-```
+4. Run the application (choose one method):
+
+   a. Using the Nix flake app (recommended):
+   ```bash
+   nix run .#spark-app
+   ```
+   This will:
+   - Create a temporary directory
+   - Build the application
+   - Run it
+   - Clean up automatically
+
+   b. Using the run script:
+   ```bash
+   ./run.sh
+   ```
 
 ## What the Example Does
 
@@ -54,6 +66,25 @@ The example application:
 ## Data Storage
 
 The Iceberg tables are stored in the `spark-warehouse` directory in your project folder. This is configured to use a local Hadoop catalog for simplicity.
+
+### Verifying Data Storage
+
+1. After running the application, you'll find the data in:
+   ```
+   spark-warehouse/
+   └── default/
+       └── users/
+           ├── data/           # Contains the actual data files
+           ├── metadata/       # Contains Iceberg metadata
+           └── snapshots/      # Contains table snapshots
+   ```
+
+2. The data persists between runs. You can verify this by:
+   - Running the application once
+   - Looking in the `spark-warehouse` directory
+   - Running the application again - it will show the same data
+
+3. The table is created with the name `spark_catalog.default.users` and uses Iceberg's format for storage.
 
 ## Dependencies
 

@@ -214,6 +214,33 @@
             type = "app";
             program = "${apache-iceberg}/bin/iceberg";
           };
+          spark-app = {
+            type = "app";
+            program = let
+              script = pkgs.writeScript "run-iceberg-app" ''
+                #!${pkgs.runtimeShell}
+                set -e
+
+                # Create temporary directory
+                TMPDIR=$(mktemp -d)
+                trap 'chmod -R u+w "$TMPDIR" && rm -rf "$TMPDIR"' EXIT
+
+                echo "Building application in $TMPDIR..."
+                cd "$TMPDIR"
+                cp -r ${./.}/* .
+                chmod -R u+w .
+                ${pkgs.sbt}/bin/sbt package
+
+                echo "Running application..."
+                ${pkgs.spark}/bin/spark-submit \
+                  --class SimpleIcebergApp \
+                  --master local[*] \
+                  --packages org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.9.0 \
+                  --conf "spark.driver.extraJavaOptions=--add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED" \
+                  target/scala-2.12/simple-iceberg-app_2.12-0.1.0.jar
+              '';
+            in "${script}";
+          };
         };
       });
 }
