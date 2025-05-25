@@ -20,6 +20,39 @@ This project demonstrates how to use Apache Iceberg with Apache Spark, packaged 
             └── SimpleIcebergApp.scala  # Example application
 ```
 
+## Available Packages
+
+The flake provides several packages and tools:
+
+1. **Iceberg Core Library** (`apache-iceberg`):
+   ```bash
+   nix build .#apache-iceberg
+   ```
+   This provides the core Iceberg JAR and utilities.
+
+2. **Iceberg Spark Runtime** (`apache-iceberg-spark-runtime`):
+   ```bash
+   nix build .#apache-iceberg-spark-runtime
+   ```
+   This provides the Spark integration JAR.
+
+3. **Development Shell**:
+   ```bash
+   nix develop
+   ```
+   Provides a development environment with:
+   - JDK 11
+   - Scala
+   - SBT
+   - Spark
+   - Python 3 with pip
+
+4. **Flake Checks**:
+   ```bash
+   nix flake check
+   ```
+   Runs tests to verify the Iceberg integration works correctly.
+
 ## Getting Started
 
 1. Enter the development shell:
