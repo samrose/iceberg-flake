@@ -1,4 +1,4 @@
-# Apache Iceberg Spark Example
+# Apache Iceberg Spark Dev Env
 
 This project demonstrates how to use Apache Iceberg with Apache Spark, packaged as a Nix flake. It includes a simple example application that creates an Iceberg table, inserts data, and performs basic queries.
 
