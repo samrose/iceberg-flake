@@ -217,6 +217,7 @@
           spark-app = {
             type = "app";
             program = let
+              runtime = apache-iceberg-spark-runtime;
               script = pkgs.writeScript "run-iceberg-app" ''
                 #!${pkgs.runtimeShell}
                 set -e
@@ -232,10 +233,11 @@
                 ${pkgs.sbt}/bin/sbt package
 
                 echo "Running application..."
+                echo "Using Iceberg Spark Runtime from: ${runtime}/lib/iceberg-spark-runtime-3.3_${version}-${version}.jar"
                 ${pkgs.spark}/bin/spark-submit \
                   --class SimpleIcebergApp \
                   --master local[*] \
-                  --jars ${apache-iceberg-spark-runtime}/lib/iceberg-spark-runtime-3.3_${version}-${version}.jar \
+                  --jars ${runtime}/lib/iceberg-spark-runtime-3.3_${version}-${version}.jar \
                   --conf "spark.driver.extraJavaOptions=--add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED" \
                   target/scala-2.12/simple-iceberg-app_2.12-0.1.0.jar
               '';
