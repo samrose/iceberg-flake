@@ -235,7 +235,7 @@
                 ${pkgs.spark}/bin/spark-submit \
                   --class SimpleIcebergApp \
                   --master local[*] \
-                  --packages org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.9.0 \
+                  --jars ${apache-iceberg-spark-runtime}/lib/iceberg-spark-runtime-3.3_${version}-${version}.jar \
                   --conf "spark.driver.extraJavaOptions=--add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED" \
                   target/scala-2.12/simple-iceberg-app_2.12-0.1.0.jar
               '';

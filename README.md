@@ -34,7 +34,7 @@ The flake provides several packages and tools:
    ```bash
    nix build .#apache-iceberg-spark-runtime
    ```
-   This provides the Spark integration JAR.
+   This provides the Spark integration JAR. The spark-app uses this built package directly instead of downloading it from Maven.
 
 3. **Development Shell**:
    ```bash
@@ -79,7 +79,7 @@ sbt package
    This will:
    - Create a temporary directory
    - Build the application
-   - Run it
+   - Run it using the built Iceberg Spark runtime from the flake
    - Clean up automatically
 
    b. Using the run script:
